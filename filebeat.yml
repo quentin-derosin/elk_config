@@ -1,0 +1,42 @@
+filebeat.inputs:
+
+- type: log
+  paths:
+    - /home/quotin/Bureau/bim-projet/back/bimfilter-refactor/BimBusFilter/bimProxyRefactor/proxy-info.log 
+  tags: "PROXY"
+  fields: { log_from: "proxy"}
+
+  enabled: true
+  reload.enabled: true
+  reload.period: 10s
+- type: log
+  paths:
+    - /home/quotin/Bureau/bim-projet/back/bimfilter-refactor/BimBusFilter/bimProxyRefactor/filtre-info.log 
+  fields: { log_from: "filter"}
+
+  enabled: true
+  reload.enabled: true
+  reload.period: 10s
+
+- type: log
+  paths:
+    - /home/quotin/Bureau/bim-projet/back/bim-server/logs/server/tr.log 
+  fields: { log_from: "server-test"}
+
+  enabled: true
+  reload.enabled: true
+  reload.period: 10s
+
+processors:
+  - drop_fields:
+      fields: ["agent.ephemeral_id", "agent.hostname", "agent.id", "agent.type", "agent.version", "ecs.version", "input.type", "log.offset", "version"]
+
+
+
+
+#
+#----------------------------- Logstash output --------------------------------
+output.logstash:
+  # The Logstash hosts
+    hosts: ["127.0.0.1:5044"]
+#  hosts: ["192.168.0.159:5998"]
